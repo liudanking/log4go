@@ -3,8 +3,8 @@
 package log4go
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 	"io"
 )
 
@@ -46,13 +46,13 @@ func FormatLogRecord(format string, rec *LogRecord) string {
 	cache := *formatCache
 	if cache.LastUpdateSeconds != secs {
 		month, day, year := rec.Created.Month(), rec.Created.Day(), rec.Created.Year()
-		hour, minute, second := rec.Created.Hour(), rec.Created.Minute(), rec.Created.Second()
+		hour, minute, second, millisecond := rec.Created.Hour(), rec.Created.Minute(), rec.Created.Second(), rec.Created.Nanosecond()/1000000
 		zone, _ := rec.Created.Zone()
 		updated := &formatCacheType{
 			LastUpdateSeconds: secs,
 			shortTime:         fmt.Sprintf("%02d:%02d", hour, minute),
-			shortDate:         fmt.Sprintf("%02d/%02d/%02d", month, day, year%100),
-			longTime:          fmt.Sprintf("%02d:%02d:%02d %s", hour, minute, second, zone),
+			shortDate:         fmt.Sprintf("%02d/%02d/%02d.%03d", month, day, year%100),
+			longTime:          fmt.Sprintf("%02d:%02d:%02d.%03d %s", hour, minute, second, millisecond, zone),
 			longDate:          fmt.Sprintf("%04d/%02d/%02d", year, month, day),
 		}
 		cache = *updated
