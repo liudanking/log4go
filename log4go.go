@@ -47,11 +47,11 @@ package log4go
 
 import (
 	"errors"
-	"os"
 	"fmt"
-	"time"
-	"strings"
+	"os"
 	"runtime"
+	"strings"
+	"time"
 )
 
 // Version information
@@ -88,6 +88,13 @@ func (l level) String() string {
 		return "UNKNOWN"
 	}
 	return levelStrings[int(l)]
+}
+
+func Int2Level(l int) level {
+	if l < int(FINEST) || l > int(CRITICAL) {
+		return DEBUG
+	}
+	return level(l)
 }
 
 /****** Variables ******/
